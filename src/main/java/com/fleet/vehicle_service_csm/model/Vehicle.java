@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class Vehicle {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String LicensePlate;
@@ -26,8 +26,8 @@ public class Vehicle {
     @Enumerated(EnumType.STRING)
     private VehicleStatus status;
 
-    private LocalDateTime lastMaintance;
-    private LocalDateTime nextMaintance;
+    private LocalDateTime lastMaintenance;
+    private LocalDateTime nextMaintenance;
 
     //StandardKonstruktor
     public Vehicle() {}
@@ -51,11 +51,10 @@ public class Vehicle {
     public VehicleStatus getStatus() { return status; }
     public void setStatus(VehicleStatus status) { this.status = status; }
 
-    public LocalDateTime getLastMaintance(){return lastMaintance;}
-    public void setLastMaintance(LocalDateTime lastMaintance) { this.lastMaintance = lastMaintance; }
+    public LocalDateTime getLastMaintenance(){return lastMaintenance;}
+    public void setLastMaintenance(LocalDateTime lastMaintance) { this.lastMaintenance = lastMaintance; }
 
-    public LocalDateTime getNextMaintance(){return nextMaintance;}
-
-    public void setNextMaintance(LocalDateTime nextMaintance) { this.nextMaintance = nextMaintance; }
+    public LocalDateTime getNextMaintenance(){return nextMaintenance;}
+    public void setNextMaintenance(LocalDateTime nextMaintance) { this.nextMaintenance = nextMaintance; }
 
 }

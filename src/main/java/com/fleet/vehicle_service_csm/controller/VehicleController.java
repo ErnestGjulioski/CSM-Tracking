@@ -1,6 +1,7 @@
 package com.fleet.vehicle_service_csm.controller;
 
 
+import com.fleet.vehicle_service_csm.dto.VehicleDTO;
 import com.fleet.vehicle_service_csm.model.Vehicle;
 import com.fleet.vehicle_service_csm.repository.VehicleRepository;
 import com.fleet.vehicle_service_csm.service.VehicleService;
@@ -31,19 +32,21 @@ public class VehicleController {
     }
 
     @PostMapping
-    public Vehicle create(@RequestBody Vehicle vehicle) {
-        return service.create(vehicle);
+    public Vehicle create(@RequestBody VehicleDTO dto) {
+        return service.createFromDto(dto);
     }
 
     @PutMapping("/{id}")
-    public Vehicle update(@PathVariable Long id, @RequestBody Vehicle vehicle) {
-        return service.update(vehicle);
+    public Vehicle update(@PathVariable Long id, @RequestBody VehicleDTO dto) {
+        return service.updateFromDto(id,dto);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         service.delete(id);
     }
+
+
 
 
 
