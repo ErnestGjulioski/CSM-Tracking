@@ -3,7 +3,6 @@ package com.fleet.vehicle_service_csm.controller;
 
 import com.fleet.vehicle_service_csm.dto.VehicleDTO;
 import com.fleet.vehicle_service_csm.model.Vehicle;
-import com.fleet.vehicle_service_csm.repository.VehicleRepository;
 import com.fleet.vehicle_service_csm.service.VehicleService;
 import org.springframework.web.bind.annotation.*;
 

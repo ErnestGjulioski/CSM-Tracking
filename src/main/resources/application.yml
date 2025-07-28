@@ -1,19 +1,20 @@
 server:
-  port: 8081
+  port: 8080
+  address: 0.0.0.0  # Wichtig, damit Spring Boot im Docker auf allen Interfaces hört
 
 spring:
   application:
     name: vehicle-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/fleetdb
-    username: fleet-postgres
-    password: test
+    url: jdbc:postgresql://postgres:5432/fleetdb  # "postgres" ist der Service-Name im Docker-Netzwerk
+    username: fleetuser
+    password: fleetpass
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: update           # F?r DEV: auto-create/update Tables
+      ddl-auto: update   # Für DEV: automatische Schema-Anpassung
     show-sql: true
     properties:
       hibernate:
@@ -22,12 +23,12 @@ spring:
 
   jackson:
     serialization:
-      indent_output: true        # F?r sch?n formatiertes JSON
+      indent_output: true  # Für schön formatiertes JSON
 
 logging:
   level:
     root: info
-    com.fleet: debug             # Dein Package: ausf?hrlichere Logs
+    com.fleet: debug     # Detailliertere Logs für dein Package
 
 springdoc:
   api-docs:
