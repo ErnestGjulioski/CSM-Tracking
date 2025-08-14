@@ -1,5 +1,6 @@
 package com.fleet.vehicle_service_csm.controller;
 
+import com.fleet.vehicle_service_csm.dto.VehicleDTO;
 import com.fleet.vehicle_service_csm.model.Vehicle;
 import com.fleet.vehicle_service_csm.service.VehicleService;
 import jakarta.validation.Valid;
@@ -12,6 +13,7 @@ import java.util.List;
 @RequestMapping("/vehicles")
 @CrossOrigin
 public class VehicleController {
+
     private final VehicleService service;
 
     public VehicleController(VehicleService service) {
@@ -19,28 +21,41 @@ public class VehicleController {
     }
 
     @GetMapping
-    public List<Vehicle> getAll() {
+    public List<VehicleDTO> getAll() {
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Vehicle> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.findById(id));
+    public ResponseEntity<VehicleDTO> getById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(service.findById(id));
+        } catch (jakarta.persistence.EntityNotFoundException ex) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping
-    public ResponseEntity<Vehicle> create(@Valid @RequestBody Vehicle vehicle) {
-        return ResponseEntity.ok(service.save(vehicle));
+    public ResponseEntity<VehicleDTO> create(@Valid @RequestBody VehicleDTO dto) {
+        return ResponseEntity.ok(service.create(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Vehicle> update(@PathVariable Long id, @RequestBody Vehicle vehicleDetails) {
-        return ResponseEntity.ok(service.update(id, vehicleDetails));
+    public ResponseEntity<VehicleDTO> update(@PathVariable Long id, @Valid @RequestBody VehicleDTO dto) {
+        try {
+            return ResponseEntity.ok(service.update(id, dto));
+        } catch (jakarta.persistence.EntityNotFoundException ex) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.delete(id);
-        return ResponseEntity.noContent().build();
+        try {
+            service.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (jakarta.persistence.EntityNotFoundException ex) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
+
