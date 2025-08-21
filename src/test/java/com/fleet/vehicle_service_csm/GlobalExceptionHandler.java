@@ -1,4 +1,4 @@
-package com.fleet.vehicle_service_csm.exception;
+package com.fleet.vehicle_service_csm;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;

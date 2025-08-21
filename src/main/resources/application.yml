@@ -24,6 +24,11 @@ spring:
     serialization:
       indent_output: true
 
+  security:
+    user:
+      name: adminballs
+      password: admin123
+
 logging:
   level:
     root: info

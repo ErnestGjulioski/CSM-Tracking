@@ -1,7 +1,7 @@
 package com.fleet.vehicle_service_csm.controller;
 
+import com.fleet.vehicle_service_csm.ENUM.VehicleStatus;
 import com.fleet.vehicle_service_csm.dto.VehicleDTO;
-import com.fleet.vehicle_service_csm.model.Vehicle;
 import com.fleet.vehicle_service_csm.service.VehicleService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -57,5 +57,16 @@ public class VehicleController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/search")
+    public List<VehicleDTO> searchVehicle(
+            @RequestParam(required = false) String licensePlate,
+            @RequestParam(required = false) String manufacturer,
+            @RequestParam(required = false) VehicleStatus status,
+            @RequestParam(required = false) Integer year
+            ){
+        return service.search(licensePlate, manufacturer, status, year);
+    }
+
 }
 
