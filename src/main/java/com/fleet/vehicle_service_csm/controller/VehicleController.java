@@ -58,14 +58,14 @@ public class VehicleController {
         }
     }
 
-    @GetMapping("/search")
+    @GetMapping("/filter")
     public List<VehicleDTO> searchVehicle(
             @RequestParam(required = false) String licensePlate,
             @RequestParam(required = false) String manufacturer,
             @RequestParam(required = false) VehicleStatus status,
             @RequestParam(required = false) Integer year
             ){
-        return service.search(licensePlate, manufacturer, status, year);
+        return service.filter(licensePlate, manufacturer, status, year);
     }
 
 }

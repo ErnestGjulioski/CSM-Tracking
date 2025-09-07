@@ -5,12 +5,9 @@ import com.fleet.vehicle_service_csm.mapper.VehicleMapper;
 import com.fleet.vehicle_service_csm.model.Vehicle;
 import com.fleet.vehicle_service_csm.ENUM.VehicleStatus;
 import com.fleet.vehicle_service_csm.repository.VehicleRepository;
-import com.fleet.vehicle_service_csm.specification.VehicleSpecification;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,7 +36,7 @@ public class VehicleService {
      */
     public VehicleDTO findById(Long id) {
         Vehicle vehicle = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Vehicle not found with ID: " + id));
+                .orElseThrow(() -> new RuntimeException("Vehicle mit ID " + id + " nicht gefunden"));
         return VehicleMapper.toDTO(vehicle);
     }
 
@@ -57,7 +54,7 @@ public class VehicleService {
      */
     public VehicleDTO update(Long id, VehicleDTO dto) {
         Vehicle existing = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Vehicle not found with ID: " + id));
+                .orElseThrow(() -> new RuntimeException("Vehicle mit ID " + id + " nicht gefunden"));
 
         existing.setLicensePlate(dto.getLicensePlate());
         existing.setManufacturer(dto.getManufacturer());
@@ -75,24 +72,24 @@ public class VehicleService {
      * Fahrzeug löschen
      */
     public void delete(Long id) {
-        Vehicle vehicle = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Vehicle not found with ID: " + id));
-        repository.delete(vehicle);
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException("Vehicle mit ID " + id + " nicht gefunden");
+        }
+        repository.deleteById(id);
     }
 
     /**
      * Mehrfachfilter-Suche
      */
-    public List<VehicleDTO> search(String licensePlate, String manufacturer, VehicleStatus status, Integer year) {
-        Specification<Vehicle> spec = VehicleSpecification.hasLicensePlate(licensePlate)
-                .and(VehicleSpecification.hasManufacturer(manufacturer))
-                .and(VehicleSpecification.hasStatus(String.valueOf(status)))
-                .and(VehicleSpecification.hasYear(year));
-
-        return repository.findAll((Sort) spec)
-                .stream()
+    public List<VehicleDTO> filter(String licensePlate, String manufacturer, VehicleStatus status, Integer year) {
+        return repository.findAll().stream()
+                .filter(v -> licensePlate == null || v.getLicensePlate().equalsIgnoreCase(licensePlate))
+                .filter(v -> manufacturer == null || v.getManufacturer().equalsIgnoreCase(manufacturer))
+                .filter(v -> status == null || v.getStatus() == status)
+                .filter(v -> year == null || v.getYear() == year)
                 .map(VehicleMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
+
 
 }
