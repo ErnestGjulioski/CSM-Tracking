@@ -1,0 +1,18 @@
+# ===== Backend =====
+APP_NAME=vehicle-service
+SERVER_PORT=8081
+
+# ===== Postgres =====
+POSTGRES_DB=fleetdb
+POSTGRES_USER=fleetuser
+POSTGRES_PASSWORD=fleetpass
+POSTGRES_PORT=5432
+
+# ===== Redis (optional for caching / pubsub) =====
+REDIS_PORT=6379
+
+# ===== Prometheus scrape =====
+PROMETHEUS_SCRAPE_PORT=8081
+
+# ===== Grafana =====
+GRAFANA_PORT=3000
