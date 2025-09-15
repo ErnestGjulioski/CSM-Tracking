@@ -1,6 +1,6 @@
-package com.fleet.vehicle_service_csm.specification;
+package com.fleet.vehicle_service_csm.VehicleEntity.specification;
 
-import com.fleet.vehicle_service_csm.model.Vehicle;
+import com.fleet.vehicle_service_csm.VehicleEntity.model.Vehicle;
 import org.springframework.data.jpa.domain.Specification;
 
 public class VehicleSpecification {

@@ -1,0 +1,133 @@
+{
+  "info": {
+    "name": "CSM-Tracking API",
+    "_postman_id": "csm-tracking-complete",
+    "description": "Postman Collection für Vehicles, Maintenances, Telemetry, Geofences und Monitoring",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Vehicles",
+      "item": [
+        {
+          "name": "Create Vehicle",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"licensePlate\": \"M-AB123\",\n  \"manufacturer\": \"BMW\",\n  \"model\": \"X5\",\n  \"year\": 2020,\n  \"status\": \"ACTIVE\",\n  \"lastLatitude\": 52.5200,\n  \"lastLongitude\": 13.4050\n}"
+            },
+            "url": "{{baseUrl}}/vehicles"
+          }
+        },
+        { "name": "Get All Vehicles", "request": { "method": "GET", "url": "{{baseUrl}}/vehicles" } },
+        { "name": "Get Vehicle by ID", "request": { "method": "GET", "url": "{{baseUrl}}/vehicles/{{vehicleId}}" } },
+        {
+          "name": "Update Vehicle",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"licensePlate\": \"M-XY987\",\n  \"manufacturer\": \"Audi\",\n  \"model\": \"A6\",\n  \"year\": 2021,\n  \"status\": \"MAINTENANCE\"\n}"
+            },
+            "url": "{{baseUrl}}/vehicles/{{vehicleId}}"
+          }
+        },
+        { "name": "Delete Vehicle", "request": { "method": "DELETE", "url": "{{baseUrl}}/vehicles/{{vehicleId}}" } },
+        {
+          "name": "Filter Vehicles",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/vehicles/filter?status=ACTIVE&manufacturer=BMW"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Maintenance",
+      "item": [
+        {
+          "name": "Create Maintenance",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Oil Change\",\n  \"dueAtKm\": 15000,\n  \"dueAtDate\": \"2024-12-01\",\n  \"status\": \"OPEN\",\n  \"notes\": \"Do at next service\",\n  \"vehicleId\": {{vehicleId}}\n}"
+            },
+            "url": "{{baseUrl}}/maintenances"
+          }
+        },
+        { "name": "Get All Maintenances", "request": { "method": "GET", "url": "{{baseUrl}}/maintenances" } },
+        { "name": "Get Maintenance by ID", "request": { "method": "GET", "url": "{{baseUrl}}/maintenances/{{maintenanceId}}" } },
+        {
+          "name": "Update Maintenance",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Brake Check\",\n  \"status\": \"DONE\",\n  \"notes\": \"Changed front pads\"\n}"
+            },
+            "url": "{{baseUrl}}/maintenances/{{maintenanceId}}"
+          }
+        },
+        { "name": "Delete Maintenance", "request": { "method": "DELETE", "url": "{{baseUrl}}/maintenances/{{maintenanceId}}" } },
+        { "name": "Filter by Vehicle", "request": { "method": "GET", "url": "{{baseUrl}}/maintenances?vehicleId={{vehicleId}}" } },
+        { "name": "Filter by Date Range", "request": { "method": "GET", "url": "{{baseUrl}}/maintenances/filter?startDate=2024-01-01&endDate=2024-12-31" } },
+        { "name": "Filter by Status", "request": { "method": "GET", "url": "{{baseUrl}}/maintenances/filter?status=OPEN" } }
+      ]
+    },
+    {
+      "name": "Telemetry",
+      "item": [
+        {
+          "name": "Send Position Update",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vehicleId\": {{vehicleId}},\n  \"lat\": 52.52,\n  \"lon\": 13.405,\n  \"timestamp\": 1710000000000\n}"
+            },
+            "url": "{{baseUrl}}/telemetry/position"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Geofences",
+      "item": [
+        { "name": "Get All Geofences", "request": { "method": "GET", "url": "{{baseUrl}}/geofences" } },
+        {
+          "name": "Create Geofence",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Depot\",\n  \"centerLat\": 52.52,\n  \"centerLon\": 13.405,\n  \"radiusMeters\": 500\n}"
+            },
+            "url": "{{baseUrl}}/geofences"
+          }
+        },
+        { "name": "Delete Geofence", "request": { "method": "DELETE", "url": "{{baseUrl}}/geofences/{{geofenceId}}" } }
+      ]
+    },
+    {
+      "name": "System",
+      "item": [
+        { "name": "Health", "request": { "method": "GET", "url": "{{baseUrl}}/actuator/health" } },
+        { "name": "Prometheus Metrics", "request": { "method": "GET", "url": "{{baseUrl}}/actuator/prometheus" } }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8081" },
+    { "key": "vehicleId", "value": "1" },
+    { "key": "maintenanceId", "value": "1" },
+    { "key": "geofenceId", "value": "1" }
+  ]
+}

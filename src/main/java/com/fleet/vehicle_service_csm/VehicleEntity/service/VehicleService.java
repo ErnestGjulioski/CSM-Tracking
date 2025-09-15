@@ -1,10 +1,10 @@
-package com.fleet.vehicle_service_csm.service;
+package com.fleet.vehicle_service_csm.VehicleEntity.service;
 
-import com.fleet.vehicle_service_csm.dto.VehicleDTO;
-import com.fleet.vehicle_service_csm.mapper.VehicleMapper;
-import com.fleet.vehicle_service_csm.model.Vehicle;
-import com.fleet.vehicle_service_csm.ENUM.VehicleStatus;
-import com.fleet.vehicle_service_csm.repository.VehicleRepository;
+import com.fleet.vehicle_service_csm.VehicleEntity.dto.VehicleDTO;
+import com.fleet.vehicle_service_csm.VehicleEntity.mapper.VehicleMapper;
+import com.fleet.vehicle_service_csm.VehicleEntity.model.Vehicle;
+import com.fleet.vehicle_service_csm.VehicleEntity.ENUM.VehicleStatus;
+import com.fleet.vehicle_service_csm.VehicleEntity.repository.VehicleRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

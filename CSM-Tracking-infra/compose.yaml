@@ -1,0 +1,90 @@
+# Comments are provided throughout this file to help you get started.
+# If you need more help, visit the Docker Compose reference guide at
+# https://docs.docker.com/go/compose-spec-reference/
+
+# Here the instructions define your application as a service called "server".
+# This service is built from the Dockerfile in the current directory.
+# You can add other services your application may depend on here, such as a
+# database or a cache. For examples, see the Awesome Compose repository:
+# https://github.com/docker/awesome-compose
+
+
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ../CSM-Tracking/CSM-Tracking
+      dockerfile: Dockerfile
+    container_name: csm-backend
+    env_file: .env
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:${POSTGRES_PORT}/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      - SPRING_REDIS_HOST=redis
+      - SPRING_REDIS_PORT=${REDIS_PORT}
+    ports:
+      - "${SERVER_PORT}:8081"
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: postgres:15
+    container_name: csm-postgres
+    restart: always
+    env_file: .env
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/00-init.sql:ro
+
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: csm-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+
+  redis:
+    image: redis:7
+    container_name: csm-redis
+    ports:
+      - "${REDIS_PORT}:6379"
+
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    container_name: csm-prometheus
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    depends_on:
+      - backend
+
+  grafana:
+    image: grafana/grafana:11.1.0
+    container_name: csm-grafana
+    ports:
+      - "${GRAFANA_PORT}:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+
+volumes:
+  pgdata:
+  grafana-data:
+
+
+

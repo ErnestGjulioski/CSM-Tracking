@@ -1,4 +1,4 @@
-package com.fleet.vehicle_service_csm.ENUM;
+package com.fleet.vehicle_service_csm.VehicleEntity.ENUM;
 
 public enum VehicleStatus {
     ACTIVE("Aktiv"),

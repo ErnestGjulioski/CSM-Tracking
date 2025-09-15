@@ -1,8 +1,8 @@
-package com.fleet.vehicle_service_csm.controller;
+package com.fleet.vehicle_service_csm.VehicleEntity.controller;
 
-import com.fleet.vehicle_service_csm.ENUM.VehicleStatus;
-import com.fleet.vehicle_service_csm.dto.VehicleDTO;
-import com.fleet.vehicle_service_csm.service.VehicleService;
+import com.fleet.vehicle_service_csm.VehicleEntity.ENUM.VehicleStatus;
+import com.fleet.vehicle_service_csm.VehicleEntity.dto.VehicleDTO;
+import com.fleet.vehicle_service_csm.VehicleEntity.service.VehicleService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
